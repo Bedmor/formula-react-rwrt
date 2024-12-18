@@ -1,0 +1,15 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model formulas {
+  formula_id    Int       @id @default(autoincrement())
+  formula_name  String?   @unique(map: "formula_name_UNIQUE") @db.VarChar(45)
+  formula       String?   @db.VarChar(45)
+  creation_time DateTime? @default(now()) @db.DateTime(0)
+}
