@@ -1,29 +1,44 @@
-# Create T3 App
+# Formula React RWRT
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+Welcome to the Formula React RWRT project! This project is designed to help you get started with building React applications using the RWRT (React Webpack React Testing) stack.
 
-## What's next? How do I make an app with this?
+## Table of Contents
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Installation
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+To get started, clone the repository and install the dependencies:
 
-## Learn More
+```bash
+git clone https://github.com/yourusername/formula-react-rwrt.git
+cd formula-react-rwrt
+npm install
+```
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+## Usage
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+To start the development server, run:
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+```bash
+npm start
+```
 
-## How do I deploy this?
+This will start the application at `http://localhost:3000`.
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+To run the tests, use:
+
+```bash
+npm test
+```
+
+## Contributing
+
+We welcome contributions! Please fork the repository and submit a pull request with your changes. Make sure to follow the project's coding standards and write tests for any new features.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.

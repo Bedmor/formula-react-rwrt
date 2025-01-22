@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 const prisma = new PrismaClient();
+import type { Formula } from "~/app/types.tsx";
 
 export async function POST(req: NextRequest, res: NextResponse) {
   const params = await req.formData();
@@ -20,8 +21,8 @@ export async function POST(req: NextRequest, res: NextResponse) {
     await prisma.formulas.update({
       where: { formula_id: id },
       data: {
-        formula_name: name || undefined,
-        formula: formula || undefined,
+        formula_name: name ?? undefined,
+        formula: formula ?? undefined,
         approved: isNaN(approved) ? undefined : approved,
       },
     });
