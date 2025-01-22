@@ -12,4 +12,5 @@ model formulas {
   formula_name  String?   @unique(map: "formula_name_UNIQUE") @db.VarChar(45)
   formula       String?   @db.VarChar(45)
   creation_time DateTime? @default(now()) @db.DateTime(0)
+  approved      Int       @default(0) @db.TinyInt
 }
