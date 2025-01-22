@@ -50,7 +50,7 @@ export default function Home() {
             <tbody>
               {formulas.map((formula) => (
                 <tr key={formula.formula_id}>
-                  <td className="text-thin ring-1 ring-white">
+                  <td className="flex h-9 px-3 py-1 text-thin border rounded-md border-white">
                     {formula.formula_id}
                   </td>
                   <td>
