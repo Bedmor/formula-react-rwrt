@@ -16,7 +16,7 @@ export function SearchButton() {
       body: formData,
     })
       .then((res) => res.json())
-      .then((data) => {
+      .then((data: string) => {
         setResponse(data);
       })
       .finally(() => setLoading(false));
@@ -64,7 +64,7 @@ export function AddButton() {
       body: formData,
     })
       .then((res) => res.json())
-      .then((data) => {
+      .then((data: string) => {
         setResponse(data);
       })
       .finally(() => setLoading(false));

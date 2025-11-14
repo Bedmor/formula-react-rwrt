@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
@@ -7,6 +8,11 @@ export async function POST(req: NextRequest) {
   const name = params.get("formula_name") as string | null;
   const formula = params.get("formula") as string | null;
   const approved = parseInt(params.get("approved") as string);
+
+  if (isNaN(id)) {
+    return NextResponse.json("Invalid formula_id", { status: 400 });
+  }
+
   try {
     const response = await prisma.formulas.findFirst({
       where: {

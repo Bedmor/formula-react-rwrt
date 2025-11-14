@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { AddButton, SearchButton } from "./components";
 import ParticleBackground from "./ParticleBackground";
-
 
 export default function HomePage() {
   return (

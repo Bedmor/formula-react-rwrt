@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
@@ -7,7 +8,9 @@ export async function POST(req: NextRequest) {
   const formula = params.get("formula") as string;
 
   if (!formula_name || !formula) {
-    return NextResponse.json("Missing formula_name or formula");
+    return NextResponse.json("Missing formula_name or formula", {
+      status: 400,
+    });
   }
 
   try {

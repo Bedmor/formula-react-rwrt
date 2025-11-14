@@ -9,12 +9,15 @@ import useSWR, { useSWRConfig } from "swr";
 export default function Home() {
   const { mutate } = useSWRConfig();
   const [formulas, setFormulas] = useState<Formula[]>([]);
-  const fetcher = (url: string | URL | Request) =>
-    fetch(url, {
-      method: "GET",
-    }).then((res) => res.json());
+  const fetcher = async (url: string | URL | Request): Promise<Formula[]> => {
+    const res = await fetch(url, { method: "GET" });
+    return res.json() as Promise<Formula[]>;
+  };
 
-  const { data, error, isLoading } = useSWR<Formula[]>("/api/search", fetcher);
+  const { data, error, isLoading } = useSWR<Formula[], Error>(
+    "/api/search",
+    fetcher,
+  );
   useEffect(() => {
     if (data && Array.isArray(data) && data.length > 0) {
       setFormulas(data);
@@ -30,14 +33,14 @@ export default function Home() {
     const data = new FormData();
     data.append("formula_id", id.toString());
     data.append("formula_name", name);
-    fetch("/api/update", {
+    void fetch("/api/update", {
       method: "POST",
       body: data,
     })
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        mutate("/api/search");
+        void mutate("/api/search");
       })
       .catch((error) => console.error("Error updating formula name:", error));
   }
@@ -46,14 +49,14 @@ export default function Home() {
     const data = new FormData();
     data.append("formula_id", id.toString());
     data.append("formula", formula);
-    fetch("/api/update", {
+    void fetch("/api/update", {
       method: "POST",
       body: data,
     })
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        mutate("/api/search");
+        void mutate("/api/search");
       })
       .catch((error) => console.error("Error updating formula:", error));
   }
@@ -62,14 +65,14 @@ export default function Home() {
     const data = new FormData();
     data.append("formula_id", id.toString());
     data.append("approved", approved ? "1" : "0");
-    fetch("/api/update", {
+    void fetch("/api/update", {
       method: "POST",
       body: data,
     })
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        mutate("/api/search");
+        void mutate("/api/search");
       })
       .catch((error) =>
         console.error("Error updating approval status:", error),
@@ -85,7 +88,7 @@ export default function Home() {
 
     const data = new FormData();
     data.append("formula_id", id.toString());
-    fetch("/api/remove", {
+    void fetch("/api/remove", {
       method: "POST",
       body: data,
     })
@@ -99,14 +102,14 @@ export default function Home() {
     data.append("formula_name", "null");
     data.append("formula", "null");
     data.append("approved", "0");
-    fetch("/api/add", {
+    void fetch("/api/add", {
       method: "POST",
       body: data,
     })
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        mutate("/api/search");
+        void mutate("/api/search");
       })
       .catch((error) => console.error("Error adding formula:", error));
   }
@@ -115,7 +118,7 @@ export default function Home() {
     setFormulas(
       formulas.map((formula) =>
         formula.formula_id === id
-          ? { ...formula, approved: !formula.approved }
+          ? { ...formula, approved: formula.approved === 1 ? 0 : 1 }
           : formula,
       ),
     );
@@ -159,7 +162,7 @@ export default function Home() {
                         }}
                         type="text"
                         name="formula_name"
-                        defaultValue={formula.formula_name}
+                        defaultValue={formula.formula_name ?? ""}
                       />
                     </td>
                     <td>
@@ -172,7 +175,7 @@ export default function Home() {
                         }}
                         type="text"
                         name="formula"
-                        defaultValue={formula.formula}
+                        defaultValue={formula.formula ?? ""}
                       />
                     </td>
                     <td className="flex">
@@ -180,7 +183,7 @@ export default function Home() {
                         className="relative top-2 size-4 border-gray-200"
                         id="approved"
                         name="approved"
-                        defaultChecked={formula.approved ? true : false}
+                        defaultChecked={formula.approved === 1}
                         onCheckedChange={(checked: boolean) => {
                           handleApprovalChange(formula.formula_id, checked);
                         }}
@@ -189,7 +192,7 @@ export default function Home() {
                         htmlFor="approved"
                         className="relative top-1 text-white"
                       >
-                        {formula.approved ? "Approved" : "Not Approved"}
+                        {formula.approved === 1 ? "Approved" : "Not Approved"}
                       </label>
                     </td>
                     <td>
@@ -210,7 +213,7 @@ export default function Home() {
               onClick={(e) => {
                 e.preventDefault();
                 handleAdd();
-                mutate("/api/search");
+                void mutate("/api/search");
               }}
               variant={"secondary"}
             >

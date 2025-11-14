@@ -1,7 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     const response = await prisma.formulas.findMany();
     if (response.length === 0) {
@@ -22,6 +23,11 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const params = await req.formData();
   const name = params.get("formula_name") as string;
+
+  if (!name) {
+    return NextResponse.json("Missing formula_name", { status: 400 });
+  }
+
   try {
     const response = await prisma.formulas.findFirst({
       where: {
