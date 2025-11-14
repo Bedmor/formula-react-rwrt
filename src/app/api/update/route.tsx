@@ -1,7 +1,5 @@
-import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-const prisma = new PrismaClient();
-import type { Formula } from "~/app/types.tsx";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
   const params = await req.formData();
@@ -16,7 +14,7 @@ export async function POST(req: NextRequest) {
       },
     });
     if (!response) {
-      return NextResponse.json("Formula not found");
+      return NextResponse.json("Formula not found", { status: 404 });
     }
     await prisma.formulas.update({
       where: { formula_id: id },
@@ -27,7 +25,10 @@ export async function POST(req: NextRequest) {
       },
     });
     return NextResponse.json("Formula updated successfully");
-  } catch (error) {
-    console.error(error.stack);
+  } catch (error: unknown) {
+    console.error("Error updating formula:", error);
+    return NextResponse.json("An error occurred while updating the formula", {
+      status: 500,
+    });
   }
 }

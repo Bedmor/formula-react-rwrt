@@ -14,14 +14,15 @@ export default function Home() {
       method: "GET",
     }).then((res) => res.json());
 
-  const { data, error, isLoading } = useSWR("/api/search", fetcher);
+  const { data, error, isLoading } = useSWR<Formula[]>("/api/search", fetcher);
   useEffect(() => {
-    if (data && data.length > 0) {
+    if (data && Array.isArray(data) && data.length > 0) {
       setFormulas(data);
     } else {
       setFormulas([]);
     }
   }, [data]);
+
   if (error) {
     console.error("Error fetching formulas:", error);
   }

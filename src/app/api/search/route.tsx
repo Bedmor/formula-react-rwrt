@@ -1,9 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-import type { Formula } from "~/app/types.tsx";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 export async function GET(req: NextRequest) {
   try {
@@ -15,8 +11,12 @@ export async function GET(req: NextRequest) {
       );
     }
     return NextResponse.json(response);
-  } catch (err) {
-    console.error(err.stack);
+  } catch (error: unknown) {
+    console.error("Error fetching formulas:", error);
+    return NextResponse.json(
+      { message: "An error occurred while fetching formulas" },
+      { status: 500 },
+    );
   }
 }
 export async function POST(req: NextRequest) {
@@ -30,13 +30,17 @@ export async function POST(req: NextRequest) {
     });
     console.log(response);
     if (!response) {
-      return NextResponse.json("Formula not found");
+      return NextResponse.json("Formula not found", { status: 404 });
     }
     if (response.approved === 0) {
-      return NextResponse.json("Formula not approved yet");
+      return NextResponse.json("Formula not approved yet", { status: 403 });
     }
-    return NextResponse.json(response?.formula);
-  } catch (error) {
-    console.error(error);
+    return NextResponse.json(response.formula);
+  } catch (error: unknown) {
+    console.error("Error searching formula:", error);
+    return NextResponse.json(
+      "An error occurred while searching for the formula",
+      { status: 500 },
+    );
   }
 }

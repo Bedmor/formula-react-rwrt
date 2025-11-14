@@ -1,15 +1,15 @@
 "use client";
 import { useState } from "react";
-import { useFormState, useFormStatus } from "react-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ParticleBackground from "./ParticleBackground";
 
 export function SearchButton() {
-  const { pending } = useFormStatus();
   const [response, setResponse] = useState("");
+  const [loading, setLoading] = useState(false);
   async function handleSubmitSearch(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setLoading(true);
     const formData = new FormData(event.currentTarget);
     await fetch("/api/search", {
       method: "POST",
@@ -18,7 +18,8 @@ export function SearchButton() {
       .then((res) => res.json())
       .then((data) => {
         setResponse(data);
-      });
+      })
+      .finally(() => setLoading(false));
   }
 
   return (
@@ -27,7 +28,7 @@ export function SearchButton() {
         <form className="flex flex-row" onSubmit={handleSubmitSearch}>
           <Input
             name="formula_name"
-            className="sm:w-max[24rem] peer h-14 rounded-e-none  bg-inherit px-4 text-white  transition-all focus:border-4 lg:w-[50rem]"
+            className="sm:w-max[24rem] peer h-14 rounded-e-none bg-inherit px-4 text-white transition-all focus:border-4 lg:w-[50rem]"
             type="text"
             id="SearchB"
             placeholder="You Can Search Here!"
@@ -44,18 +45,19 @@ export function SearchButton() {
         </form>
       </div>
       <h1 id="result" className="text-6xl font-thin text-white transition-all">
-        {pending ? "Loading..." : response}
+        {loading ? "Loading..." : response}
       </h1>
     </div>
   );
 }
 //TODO: Add confirmation for adding formulas
 export function AddButton() {
-  const { pending } = useFormStatus();
   const [response, setResponse] = useState("");
+  const [loading, setLoading] = useState(false);
   const [AddPressed, setAddPressed] = useState(false);
   async function handleSubmitAdd(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setLoading(true);
     const formData = new FormData(event.currentTarget);
     await fetch("/api/add", {
       method: "POST",
@@ -64,7 +66,8 @@ export function AddButton() {
       .then((res) => res.json())
       .then((data) => {
         setResponse(data);
-      });
+      })
+      .finally(() => setLoading(false));
   }
 
   return (
@@ -121,7 +124,7 @@ export function AddButton() {
               id="result2"
               className="text-6xl font-thin text-white transition-all"
             >
-              {pending ? "Loading..." : response}
+              {loading ? "Loading..." : response}
             </h1>
           </form>
         )}

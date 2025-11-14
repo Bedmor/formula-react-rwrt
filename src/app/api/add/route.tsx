@@ -1,9 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-import type { Formula } from "~/app/types.tsx";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
   const params = await req.formData();
@@ -15,20 +11,24 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const newFormula = await prisma.formulas.create({
+    await prisma.formulas.create({
       data: {
         formula_name,
         formula,
       },
     });
     return NextResponse.json("Formula added to the database");
-  } catch (error) {
-    if (error.code === "P2002") {
+  } catch (error: unknown) {
+    if (
+      error &&
+      typeof error === "object" &&
+      "code" in error &&
+      error.code === "P2002"
+    ) {
       return NextResponse.json(
         "Formula already exists in the database wait for it to be approved",
       );
-    } else {
-      return NextResponse.json("An error occured while adding the formula");
     }
+    return NextResponse.json("An error occurred while adding the formula");
   }
 }
