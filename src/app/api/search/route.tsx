@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
 }
 export async function POST(req: NextRequest) {
   const params = await req.formData();
-  const name = params.get("formula_name");
+  const name = params.get("formula_name") as string;
   try {
     const response = await prisma.formulas.findFirst({
       where: {

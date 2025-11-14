@@ -5,10 +5,10 @@ import type { Formula } from "~/app/types.tsx";
 
 export async function POST(req: NextRequest) {
   const params = await req.formData();
-  const id = parseInt(params.get("formula_id"));
-  const name = params.get("formula_name");
-  const formula = params.get("formula");
-  const approved = parseInt(params.get("approved"));
+  const id = parseInt(params.get("formula_id") as string);
+  const name = params.get("formula_name") as string | null;
+  const formula = params.get("formula") as string | null;
+  const approved = parseInt(params.get("approved") as string);
   try {
     const response = await prisma.formulas.findFirst({
       where: {

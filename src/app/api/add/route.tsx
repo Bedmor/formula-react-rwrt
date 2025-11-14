@@ -7,8 +7,8 @@ const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest) {
   const params = await req.formData();
-  const formula_name = params.get("formula_name");
-  const formula = params.get("formula");
+  const formula_name = params.get("formula_name") as string;
+  const formula = params.get("formula") as string;
 
   if (!formula_name || !formula) {
     return NextResponse.json("Missing formula_name or formula");

@@ -5,7 +5,7 @@ import type { Formula } from "~/app/types.tsx";
 const prisma = new PrismaClient();
 export async function POST(req: NextRequest) {
   const params = await req.formData();
-  const formula_id = params.get("formula_id");
+  const formula_id = params.get("formula_id") as string;
 
   const deletedFormula = await prisma.formulas.delete({
     where: { formula_id: parseInt(formula_id) },
