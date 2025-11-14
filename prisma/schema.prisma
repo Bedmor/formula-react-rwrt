@@ -3,14 +3,15 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model formulas {
   formula_id    Int       @id @default(autoincrement())
-  formula_name  String?   @unique(map: "formula_name_UNIQUE") @db.VarChar(45)
-  formula       String?   @db.VarChar(45)
-  creation_time DateTime? @default(now()) @db.DateTime(0)
-  approved      Int       @default(0) @db.TinyInt
+  formula_name  String?   @unique
+  formula       String?
+  creation_time DateTime? @default(now())
+  approved      Int       @default(0) @db.SmallInt
 }
