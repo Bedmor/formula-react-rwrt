@@ -5,7 +5,7 @@ import type { Formula } from "~/app/types.tsx";
 
 const prisma = new PrismaClient();
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
   const params = await req.formData();
   const formula_name = params.get("formula_name");
   const formula = params.get("formula");
@@ -24,9 +24,10 @@ export async function POST(req: NextRequest, res: NextResponse) {
     return NextResponse.json("Formula added to the database");
   } catch (error) {
     if (error.code === "P2002") {
-      return NextResponse.json("Formula already exists in the database wait for it to be approved");
-    }
-    else {
+      return NextResponse.json(
+        "Formula already exists in the database wait for it to be approved",
+      );
+    } else {
       return NextResponse.json("An error occured while adding the formula");
     }
   }

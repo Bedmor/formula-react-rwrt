@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 const prisma = new PrismaClient();
 import type { Formula } from "~/app/types.tsx";
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
   const params = await req.formData();
   const id = parseInt(params.get("formula_id"));
   const name = params.get("formula_name");

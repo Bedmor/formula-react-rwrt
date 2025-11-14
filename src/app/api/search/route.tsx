@@ -5,18 +5,21 @@ import type { Formula } from "~/app/types.tsx";
 
 const prisma = new PrismaClient();
 
-export async function GET(req: NextRequest, res: NextResponse) {
+export async function GET(req: NextRequest) {
   try {
     const response = await prisma.formulas.findMany();
     if (response.length === 0) {
-      return NextResponse.json({ message: "No formulas found" },{status: 404});
+      return NextResponse.json(
+        { message: "No formulas found" },
+        { status: 404 },
+      );
     }
     return NextResponse.json(response);
-  }
-  catch (err) {
+  } catch (err) {
     console.error(err.stack);
-}}
-export async function POST(req: NextRequest, res: NextResponse) {
+  }
+}
+export async function POST(req: NextRequest) {
   const params = await req.formData();
   const name = params.get("formula_name");
   try {
